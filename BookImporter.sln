@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookImporter.Services", "Bo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookImporter.Entities", "BookImporter.Entities\BookImporter.Entities.csproj", "{2F5BECCF-65AA-4B5F-BD91-B434AA48014F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookImporter.Tests", "BookImporter.Tests\BookImporter.Tests.csproj", "{336BB2DA-9F36-4DCC-B34D-4D4AB678104A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookImporter.Tests", "BookImporter.Tests\BookImporter.Tests.csproj", "{336BB2DA-9F36-4DCC-B34D-4D4AB678104A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookImporter.Repositories", "BookImporter.Repositories\BookImporter.Repositories.csproj", "{6B074E8A-2AC2-40CB-99DC-B8FD58DFA2F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{336BB2DA-9F36-4DCC-B34D-4D4AB678104A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{336BB2DA-9F36-4DCC-B34D-4D4AB678104A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{336BB2DA-9F36-4DCC-B34D-4D4AB678104A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B074E8A-2AC2-40CB-99DC-B8FD58DFA2F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B074E8A-2AC2-40CB-99DC-B8FD58DFA2F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B074E8A-2AC2-40CB-99DC-B8FD58DFA2F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B074E8A-2AC2-40CB-99DC-B8FD58DFA2F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

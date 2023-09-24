@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookImporter.Entities\BookImporter.Entities.csproj" />
+    <ProjectReference Include="..\BookImporter.Repositories\BookImporter.Repositories.csproj" />
   </ItemGroup>
 
     <ItemGroup>

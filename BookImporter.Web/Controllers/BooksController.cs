@@ -1,5 +1,6 @@
 ﻿using BookImporter.Services.Interfaces;
 using BookImporter.Web.ViewModels.Request;
+using BookImporter.Web.ViewModels.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,9 +21,13 @@ namespace BookImporter.Web.Controllers
         [Route("import")]
         public async Task<IActionResult> ImportBooks([FromForm]ImportBooksRequest request)
         {
-            
             using var reader = new StreamReader(request.File.OpenReadStream());
-            return Ok(_bookService.ImportBooks(reader));
+            var importCount = await _bookService.ImportBooks(reader);
+            return Ok(new BaseResponse
+            {
+                Success = true,
+                Message = $"Imported {importCount} new book{(importCount == 1 ? "" : "s")}."
+            });
         }
     }
 }

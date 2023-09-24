@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BookImporter.Entities.Models
+namespace BookImporter.Entities.DTOs
 {
-    public class Book : Entity
+    public class BookDTO
     {
         public string Name { get; set; }
 
         public string ISBN { get; set; }
 
-        public virtual ICollection<Author> Authors { get; set; }
+        public string Author { get; set; }
     }
 }

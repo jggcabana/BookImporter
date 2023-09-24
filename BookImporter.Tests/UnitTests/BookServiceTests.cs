@@ -1,4 +1,7 @@
 ﻿using BookImporter.Entities.Exceptions;
+using BookImporter.Entities.Models;
+using BookImporter.Repositories.Interfaces;
+using BookImporter.Repositories.Repositories;
 using BookImporter.Services.Interfaces;
 using BookImporter.Services.Services;
 using Castle.Core.Logging;
@@ -18,6 +21,7 @@ namespace BookImporter.Tests.UnitTests
     public class BookServiceTests
     {
         private readonly List<IBookParser> _parsers = new(); 
+        private readonly IBookRepository _bookRepository;
 
         public BookServiceTests()
         {
@@ -48,49 +52,60 @@ namespace BookImporter.Tests.UnitTests
                 .Build();
 
             _parsers.Add(new DefaultBookParser(config, logger));
+
+            _bookRepository = Substitute.For<IBookRepository>();
         }
 
         [TestMethod]
-        public void BookService_ImportBooks_FromTextFileA_Returns_15_rows()
+        public async Task BookService_ImportBooks_FromTextFileA_Returns_15_rows()
         {
             // Arrange
             using var reader = new StreamReader("../../../TestData/A.TXT");
-            var service = new BookService(_parsers);
+            var service = new BookService(_parsers, _bookRepository);
+
+            var batch = new ImportBatch();
+            _bookRepository.CreateImportBatchAsync(batch).Returns(new ImportBatch());
+            _bookRepository.ImportBookAsync(Arg.Any<Book>()).Returns(3);
 
             // Act
-            var books = service.ImportBooks(reader);
+            var bookCount = await service.ImportBooks(reader);
 
             // Assert
-            Assert.IsTrue(books.Any());
-            Assert.AreEqual(15, books.Count());
+            Assert.AreEqual(15, bookCount);
         }
 
         [TestMethod]
-        public void BookService_ImportBooks_FromTextFileB_Returns_11_rows()
+        public async Task BookService_ImportBooks_FromTextFileB_Returns_11_rows()
         {
             // Arrange
             using var reader = new StreamReader("../../../TestData/B.TXT");
-            var service = new BookService(_parsers);
+            var service = new BookService(_parsers, _bookRepository);
+
+            var batch = new ImportBatch();
+            _bookRepository.CreateImportBatchAsync(batch).Returns(new ImportBatch());
+            _bookRepository.ImportBookAsync(Arg.Any<Book>()).Returns(3);
 
             // Act
-            var books = service.ImportBooks(reader);
+            var bookCount = await service.ImportBooks(reader);
 
             // Assert
-            Assert.IsTrue(books.Any());
-            Assert.AreEqual(11, books.Count());
+            Assert.AreEqual(11, bookCount);
         }
 
         [TestMethod]
-        public void BookService_ImportBooks_Throws_UnsupportedBookFormatException_If_InvalidFormat()
+        public async Task BookService_ImportBooks_Throws_UnsupportedBookFormatException_If_InvalidFormat()
         {
             // Arrange
             using var reader = new StreamReader("../../../TestData/C-Format-In-First-Line.TXT");
-            var service = new BookService(_parsers);
+            var service = new BookService(_parsers, _bookRepository);
+            
+            var batch = new ImportBatch();
+            _bookRepository.CreateImportBatchAsync(batch).Returns(new ImportBatch());
 
             // Act
             try
             {
-                var books = service.ImportBooks(reader);
+                var books = await service.ImportBooks(reader);
                 Assert.Fail();
             }
             // Assert

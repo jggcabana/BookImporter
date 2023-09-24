@@ -1,5 +1,7 @@
+using BookImporter.Repositories;
 using BookImporter.Services.Interfaces;
 using BookImporter.Services.Services;
+using Qless.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBookParser, DefaultBookParser>();
 builder.Services.AddScoped<IBookParser, OtherBookParser>();
+builder.Services.AddPersistence();
 
 var app = builder.Build();
 
@@ -26,6 +30,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
