@@ -29,7 +29,20 @@ namespace BookImporter.Services.Services
             }
         }
 
-        public async Task<int> ImportBooks(StreamReader reader)
+        public async Task<IEnumerable<BookDTO>> GetBooksAsync()
+        {
+            var books = await _bookRepository.GetAllAsync();
+
+            return books.Select(book => new BookDTO
+            {
+                Id = book.Id,
+                Name = book.Name,
+                ISBN = book.ISBN,
+                Author = String.Join(", ", book.Authors.Select(x => x.Name))
+            });
+        }
+
+        public async Task<int> ImportBooksAsync(StreamReader reader)
         {
             // create import batch
             var firstLine = reader.ReadLine();

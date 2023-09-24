@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookImporter.Repositories.Interfaces
 {
-    public interface IBookRepository
+    public interface IBookRepository : IBaseRepository<Book>
     {
-        public Task<int> ImportBooksAsync(IEnumerable<Book> books);
-
         public Task<int> ImportBookAsync(Book book);
 
         public Task<ImportBatch> CreateImportBatchAsync(ImportBatch batch);

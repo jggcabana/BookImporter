@@ -68,7 +68,7 @@ namespace BookImporter.Tests.UnitTests
             _bookRepository.ImportBookAsync(Arg.Any<Book>()).Returns(3);
 
             // Act
-            var bookCount = await service.ImportBooks(reader);
+            var bookCount = await service.ImportBooksAsync(reader);
 
             // Assert
             Assert.AreEqual(15, bookCount);
@@ -86,7 +86,7 @@ namespace BookImporter.Tests.UnitTests
             _bookRepository.ImportBookAsync(Arg.Any<Book>()).Returns(3);
 
             // Act
-            var bookCount = await service.ImportBooks(reader);
+            var bookCount = await service.ImportBooksAsync(reader);
 
             // Assert
             Assert.AreEqual(11, bookCount);
@@ -105,7 +105,7 @@ namespace BookImporter.Tests.UnitTests
             // Act
             try
             {
-                var books = await service.ImportBooks(reader);
+                var books = await service.ImportBooksAsync(reader);
                 Assert.Fail();
             }
             // Assert

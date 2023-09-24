@@ -11,6 +11,8 @@ namespace BookImporter.Services.Interfaces
 {
     public interface IBookService
     {
-        public Task<int> ImportBooks(StreamReader reader);
+        public Task<int> ImportBooksAsync(StreamReader reader);
+
+        public Task<IEnumerable<BookDTO>> GetBooksAsync();
     }
 }
