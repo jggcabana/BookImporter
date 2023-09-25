@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BookImporter.Repositories\BookImporter.Repositories.csproj" />
     <ProjectReference Include="..\BookImporter.Services\BookImporter.Services.csproj" />
   </ItemGroup>
 

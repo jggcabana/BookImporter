@@ -1,4 +1,5 @@
-﻿using BookImporter.Entities.Models;
+﻿using BookImporter.Entities.DTOs;
+using BookImporter.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace BookImporter.Services.Interfaces
 {
     public interface IBookParser
     {
-        public Book Parse(string line);
+        public BookDTO Parse(string line);
 
-        public Book Parse(string line, string formatType);
+        public BookDTO Parse(string line, string formatType);
 
         public string Key { get; }
     }

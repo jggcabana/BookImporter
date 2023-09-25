@@ -1,4 +1,5 @@
-﻿using BookImporter.Entities.Models;
+﻿using BookImporter.Entities.DTOs;
+using BookImporter.Entities.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace BookImporter.Services.Interfaces
 {
     public interface IBookService
     {
-        public List<Book> ImportBooks(StreamReader reader);
+        public Task<int> ImportBooksAsync(StreamReader reader);
+
+        public Task<IEnumerable<BookDTO>> GetBooksAsync();
     }
 }

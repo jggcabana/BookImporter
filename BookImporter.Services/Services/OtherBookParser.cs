@@ -1,4 +1,5 @@
-﻿using BookImporter.Entities.Models;
+﻿using BookImporter.Entities.DTOs;
+using BookImporter.Entities.Models;
 using BookImporter.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace BookImporter.Services.Services
     public class OtherBookParser : IBookParser
     {
         public string Key { get; } = "other";
-        public Book Parse(string line)
+        public BookDTO Parse(string line)
         {
             throw new NotImplementedException();
         }
 
-        public Book Parse(string line, string formatType)
+        public BookDTO Parse(string line, string formatType)
         {
             throw new NotImplementedException();
         }

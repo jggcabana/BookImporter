@@ -1,4 +1,5 @@
-﻿using BookImporter.Entities.Exceptions;
+﻿using BookImporter.Entities.DTOs;
+using BookImporter.Entities.Exceptions;
 using BookImporter.Entities.Models;
 using BookImporter.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
@@ -26,13 +27,13 @@ namespace BookImporter.Services.Services
         }
 
         public string Key { get; } = "default";
-        public Book Parse(string line)
+        public BookDTO Parse(string line)
         {
             string defaultFormatType = "a"; // TODO: get rid of magic string 
             return Parse(line, defaultFormatType);
         }
 
-        public Book Parse(string line, string formatType)
+        public BookDTO Parse(string line, string formatType)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace BookImporter.Services.Services
 
                 string author = line[startIndex..endIndex].Trim();
 
-                return new Book
+                return new BookDTO
                 {
                     Name = name,
                     ISBN = isbn,

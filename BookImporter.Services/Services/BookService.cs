@@ -1,5 +1,8 @@
-﻿using BookImporter.Entities.Exceptions;
+﻿using BookImporter.Entities.DTOs;
+using BookImporter.Entities.Enums;
+using BookImporter.Entities.Exceptions;
 using BookImporter.Entities.Models;
+using BookImporter.Repositories.Interfaces;
 using BookImporter.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -14,32 +17,74 @@ namespace BookImporter.Services.Services
     public class BookService : IBookService
     {
         private readonly Dictionary<string, IBookParser> _parsers = new Dictionary<string, IBookParser>();
-        public BookService(IEnumerable<IBookParser> parsers)
+
+        private readonly IBookRepository _bookRepository;
+        public BookService(IEnumerable<IBookParser> parsers, IBookRepository bookRepository)
         {
+            _bookRepository = bookRepository ?? throw new ArgumentNullException(nameof(bookRepository));
+
             foreach(var parser in parsers)
             {
                 _parsers.Add(parser.Key, parser);
             }
         }
 
-        public List<Book> ImportBooks(StreamReader reader)
+        public async Task<IEnumerable<BookDTO>> GetBooksAsync()
         {
-            var books = new List<Book>();
+            var books = await _bookRepository.GetAllAsync();
 
+            return books.Select(book => new BookDTO
+            {
+                Id = book.Id,
+                Name = book.Name,
+                ISBN = book.ISBN,
+                Author = String.Join(", ", book.Authors.Select(x => x.Name))
+            });
+        }
+
+        public async Task<int> ImportBooksAsync(StreamReader reader)
+        {
+            // create import batch
             var firstLine = reader.ReadLine();
+            var batch = await _bookRepository.CreateImportBatchAsync(new ImportBatch { BookImportFormat = firstLine });
             var parser = CreateParser(firstLine);
 
-            string line = "";
+            string line;
+            int row = 1;
             while((line = reader.ReadLine()) != null)
             {
-                if (String.IsNullOrWhiteSpace(line))
-                    continue;
+                try
+                {
+                    if (String.IsNullOrWhiteSpace(line))
+                        continue;
 
-                var book = parser.Parse(line, firstLine);
-                books.Add(book);
+                    var book = parser.Parse(line, firstLine);
+
+                    var result = await _bookRepository.ImportBookAsync(new Book
+                    {
+                        Name = book.Name,
+                        ISBN = book.ISBN,
+                        Authors = new List<Author> { new Author { Name = book.Author } }
+                    });
+
+                    // non-zero means something was added
+                    row = result > 1 ? row+1 : row;
+                }
+                catch (Exception e)
+                {
+                    // log the error, then continue
+                    await _bookRepository.CreateImportLogAsync(new ImportLog
+                    {
+                        Row = row,
+                        Status = ImportLogStatus.ERROR,
+                        Message = e.Message,
+                        ImportBatch = batch
+                    });
+                }
             }
 
-            return books;
+            // omit the first row.
+            return row-1;
         }
 
         private IBookParser CreateParser(string firstLine)
@@ -50,7 +95,7 @@ namespace BookImporter.Services.Services
                 case "b":
                     return _parsers["default"];
                 default:
-                    throw new UnsupportedBookFormatException("Unsupported Book Format.");
+                    throw new BookImporterException("Unsupported Book Format.");
             }
         }
     }
