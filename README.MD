@@ -39,7 +39,7 @@ dotnet tool update --global dotnet-ef
 ```
 - In the root folder (containing the .sln file), run the following in the terminal: 
 ```
-dotnet ef database update -p './BookImporter.Repositories' -s './BookImporter.Web'
+dotnet ef database update -p "./BookImporter.Repositories" -s "./BookImporter.Web"
 ```
 ### How to test
 - In the root folder (containing the .sln file), run the following in the terminal: 
@@ -50,7 +50,7 @@ dotnet test
 - In the root folder (containing the .sln file), run the following in the terminal:
 - API:
 ```
-dotnet run --project './BookImporter.Web'
+dotnet run --project "./BookImporter.Web"
 ```
 ### View Swagger Doc
 - While running, open a browser and navigate to https://localhost:7092/swagger
