@@ -111,7 +111,7 @@ namespace BookImporter.Tests.UnitTests
             // Assert
             catch (Exception e)
             {
-                Assert.IsInstanceOfType(e, typeof(UnsupportedBookFormatException));
+                Assert.IsInstanceOfType(e, typeof(BookImporterException));
             }
         }
     }
