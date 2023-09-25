@@ -95,7 +95,7 @@ namespace BookImporter.Services.Services
                 case "b":
                     return _parsers["default"];
                 default:
-                    throw new UnsupportedBookFormatException("Unsupported Book Format.");
+                    throw new BookImporterException("Unsupported Book Format.");
             }
         }
     }

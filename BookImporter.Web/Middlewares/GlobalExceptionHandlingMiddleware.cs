@@ -1,4 +1,5 @@
 ﻿using BookImporter.Entities.Exceptions;
+using BookImporter.Web.ViewModels.Response;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
@@ -22,9 +23,14 @@ namespace Qless.WebAPI.Middleware
             catch (BookImporterException e)
             {
                 _logger.LogError(e, e.Message);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                string json = JsonSerializer.Serialize(e.Message);
+                string json = JsonSerializer.Serialize(new BaseResponse
+                {
+                    Success = false,
+                    Message = e.Message,
+                });
+
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(json);
             }
